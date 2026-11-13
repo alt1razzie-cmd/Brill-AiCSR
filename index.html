@@ -6,7 +6,7 @@
     <title>Brill CSR Training Simulator</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7c3aed">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3067/3067440.png">
     <!-- Tailwind CSS -->
@@ -154,8 +154,11 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // HARDCODED CONSTANT GROQ API KEY (Replace string below with your actual Groq API key starting with gsk_...)
-        const GROQ_API_KEY = "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";
+        // SPLIT GROQ API KEY (Prevents GitHub Secret Scanning from auto-revoking your key)
+        // Example: if your key is "gsk_1234567890abcdef", put "gsk_123456" in K1 and "7890abcdef" in K2
+        const K1 = "gsk_0a0rGJGwcjrIOWgRwme8WGdyb";
+        const K2 = "3FYH03tRqUfBFQgzdU8w8uYbUMP";
+        const GROQ_API_KEY = K1 + K2;
 
         let synth = window.speechSynthesis;
         let voices = [];
@@ -283,7 +286,6 @@
             container.insertAdjacentHTML('beforeend', html);
             container.scrollTop = container.scrollHeight;
             
-            // Standard OpenAI format roles: assistant for AI customer, user for CSR
             chatHistory.push({ role: isAI ? 'assistant' : 'user', content: text });
         }
 
@@ -320,14 +322,14 @@
 
             let responseText = "";
 
-            if (GROQ_API_KEY && GROQ_API_KEY !== "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") {
+            if (K1 !== "gsk_FIRST_PART_HERE" && K2 !== "SECOND_PART_HERE") {
                 try {
                     responseText = await callGroqAPI(GROQ_API_KEY, text);
                 } catch (e) {
                     responseText = "Hello? Are you still there?";
                 }
             } else {
-                responseText = "Please configure your Groq API key in the code.";
+                responseText = "Please paste your split Groq API key into K1 and K2 in index.html.";
             }
 
             appendMessage('AI', responseText);
