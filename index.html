@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xfinity CSR Training Simulator</title>
+    <title>Brill CSR Training Simulator</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#6100ff">
+    <meta name="theme-color" content="#7c3aed">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3067/3067440.png">
@@ -18,28 +18,28 @@
             theme: {
                 extend: {
                     colors: {
-                        xfinityPurple: '#6100ff',
-                        xfinityDark: '#0b0b0f',
-                        xfinityCard: '#16161f'
+                        brillPurple: '#7c3aed',
+                        brillDark: '#0b0b0f',
+                        brillCard: '#16161f'
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-xfinityDark text-white font-sans antialiased h-screen flex flex-col overflow-hidden">
+<body class="bg-brillDark text-white font-sans antialiased h-screen flex flex-col overflow-hidden">
 
     <!-- TOP HEADER -->
-    <header class="bg-xfinityCard border-b border-gray-800 px-4 py-3 flex items-center justify-between shrink-0">
+    <header class="bg-brillCard border-b border-gray-800 px-4 py-3 flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
-            <div class="bg-xfinityPurple text-white p-1.5 rounded-lg font-black tracking-tighter text-sm px-2.5">xfinity</div>
+            <div class="bg-brillPurple text-white p-1.5 rounded-lg font-black tracking-tight text-sm px-3">brill</div>
             <div>
-                <h1 class="text-sm font-bold leading-none">CSR Practice Sim</h1>
-                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Simulation</span>
+                <h1 class="text-sm font-bold leading-none">CSR Training Hub</h1>
+                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live AI Simulator</span>
             </div>
         </div>
         <div class="flex items-center space-x-2">
-            <button onclick="resetCall()" class="bg-red-600/20 text-red-400 border border-red-500/30 text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-red-600 hover:text-white transition">End/Reset</button>
+            <button onclick="resetCall()" class="bg-red-600/20 text-red-400 border border-red-500/30 text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-red-600 hover:text-white transition">End / Reset</button>
         </div>
     </header>
 
@@ -47,15 +47,15 @@
     <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
         
         <!-- LEFT/TOP: SIMULATION HUD & CRM -->
-        <div class="w-full md:w-80 bg-xfinityCard border-r border-gray-800 flex flex-col shrink-0 overflow-y-auto">
+        <div class="w-full md:w-80 bg-brillCard border-r border-gray-800 flex flex-col shrink-0 overflow-y-auto">
             <!-- Scenario Selector -->
             <div class="p-4 border-b border-gray-800 space-y-3">
                 <h2 class="text-xs uppercase tracking-wider text-gray-400 font-bold">1. Select Scenario</h2>
-                <select id="categorySelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-xfinityPurple">
-                    <option value="technical">Technical Support (No Internet/Slow)</option>
-                    <option value="billing">Billing Dispute (Unexpected High Bill)</option>
-                    <option value="promo">Asking Promotion / Upgrades</option>
-                    <option value="retention">Cancellation / Retention Risk</option>
+                <select id="categorySelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-brillPurple">
+                    <option value="technical">Technical Support (Fiber/Internet Down)</option>
+                    <option value="billing">Billing Dispute (Unexpected Charges)</option>
+                    <option value="promo">Asking Promotion / Renewal Deals</option>
+                    <option value="retention">Cancellation / Churn Risk</option>
                 </select>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -64,44 +64,44 @@
                         <select id="moodSelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-1.5 text-xs text-white">
                             <option value="frustrated">Frustrated & Angry</option>
                             <option value="confused">Confused & Elderly</option>
-                            <option value="demanding">Demanding / Karen</option>
+                            <option value="demanding">Demanding / Aggressive</option>
                             <option value="polite">Polite & Cooperative</option>
                         </select>
                     </div>
                     <div>
                         <label class="text-[10px] text-gray-400 block mb-1">Customer Voice</label>
                         <select id="voiceSelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-1.5 text-xs text-white">
-                            <option value="">Default Speech Voice</option>
+                            <option value="">Default Voice</option>
                         </select>
                     </div>
                 </div>
 
-                <button onclick="startSimulation()" class="w-full bg-xfinityPurple hover:bg-purple-700 text-white font-semibold py-2 rounded-lg text-sm shadow-lg shadow-purple-900/30 transition">
-                    <i class="fa-solid fa-play mr-1.5"></i> Start Call
+                <button onclick="startSimulation()" class="w-full bg-brillPurple hover:bg-violet-700 text-white font-semibold py-2 rounded-lg text-sm shadow-lg shadow-violet-900/30 transition">
+                    <i class="fa-solid fa-play mr-1.5"></i> Start Simulated Call
                 </button>
             </div>
 
             <!-- Customer CRM Data HUD -->
             <div class="p-4 space-y-4 border-b border-gray-800">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xs uppercase tracking-wider text-gray-400 font-bold">Customer Profile</h2>
-                    <span class="text-xs bg-purple-950 text-purple-300 px-2 py-0.5 rounded border border-purple-800">Tier 1 Gold</span>
+                    <h2 class="text-xs uppercase tracking-wider text-gray-400 font-bold">Brill Subscriber Profile</h2>
+                    <span class="text-xs bg-violet-950 text-violet-300 px-2 py-0.5 rounded border border-violet-800">VIP Gold</span>
                 </div>
                 <div class="bg-gray-900/60 rounded-xl p-3 border border-gray-800 space-y-2 text-xs">
-                    <div class="flex justify-between"><span class="text-gray-400">Name:</span> <span class="font-medium">Sarah Jenkins</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Account #:</span> <span class="font-mono text-gray-300">#8492-0192-3</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Current Plan:</span> <span class="text-gray-300">Gigabit Extra + TV</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Gateway Status:</span> <span id="crmStatus" class="text-red-400 font-medium">Offline (Packet Loss)</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Name:</span> <span class="font-medium">Marcus Vance</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Account ID:</span> <span class="font-mono text-gray-300">#BRILL-9042</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Active Plan:</span> <span class="text-gray-300">Gigabit Fiber 1000Mbps</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Router Status:</span> <span id="crmStatus" class="text-red-400 font-medium">Degraded (Packet Loss)</span></div>
                 </div>
 
                 <!-- CSR Action Tools -->
                 <div>
-                    <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold block mb-2">CSR System Actions</label>
+                    <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold block mb-2">CSR System Tools</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="triggerAction('verify')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-id-card text-purple-400 mr-1"></i> Verify PIN</button>
-                        <button onclick="triggerAction('ping')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-signal text-blue-400 mr-1"></i> Ping Modem</button>
-                        <button onclick="triggerAction('credit')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-file-invoice-dollar text-green-400 mr-1"></i> Apply $10 Credit</button>
-                        <button onclick="triggerAction('transfer')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-headset text-yellow-400 mr-1"></i> Transfer Tier 2</button>
+                        <button onclick="triggerAction('verify')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-id-card text-violet-400 mr-1"></i> Verify PIN</button>
+                        <button onclick="triggerAction('ping')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-signal text-blue-400 mr-1"></i> Reboot Router</button>
+                        <button onclick="triggerAction('credit')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-file-invoice-dollar text-green-400 mr-1"></i> Apply $15 Credit</button>
+                        <button onclick="triggerAction('transfer')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-headset text-yellow-400 mr-1"></i> Escalation Tier 2</button>
                     </div>
                 </div>
             </div>
@@ -119,34 +119,34 @@
         </div>
 
         <!-- RIGHT/BOTTOM: CHAT & VOICE INTERFACE -->
-        <div class="flex-1 flex flex-col bg-xfinityDark relative overflow-hidden">
+        <div class="flex-1 flex flex-col bg-brillDark relative overflow-hidden">
             
             <!-- Chat Feed -->
             <div id="chatContainer" class="flex-1 p-4 overflow-y-auto space-y-4">
                 <div class="flex items-start space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
                     <div class="bg-gray-800 border border-gray-700/60 rounded-2xl p-3.5 max-w-md text-sm text-gray-200">
-                        <p>Welcome to Xfinity CSR Training. Select your scenario on the left and click <strong>Start Call</strong> to begin practicing!</p>
+                        <p>Welcome to Brill CSR Training Hub. Select your scenario on the left and click <strong>Start Simulated Call</strong> to begin practicing!</p>
                     </div>
                 </div>
             </div>
 
             <!-- VOICE & INPUT CONTROLS -->
-            <div class="bg-xfinityCard border-t border-gray-800 p-4 shrink-0">
+            <div class="bg-brillCard border-t border-gray-800 p-4 shrink-0">
                 <div class="flex items-center space-x-2">
                     <button id="micBtn" onclick="toggleSpeechRecognition()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 w-12 h-12 rounded-full flex items-center justify-center border border-gray-700 shrink-0 transition relative">
                         <i id="micIcon" class="fa-solid fa-microphone text-lg"></i>
                     </button>
                     <div class="flex-1 relative">
-                        <input type="text" id="userInput" onkeydown="if(event.key==='Enter') sendCSRMessage()" placeholder="Type your CSR response or tap mic to speak..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-xfinityPurple pr-10">
+                        <input type="text" id="userInput" onkeydown="if(event.key==='Enter') sendCSRMessage()" placeholder="Type your CSR response or tap mic to speak..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brillPurple pr-10">
                     </div>
-                    <button onclick="sendCSRMessage()" class="bg-xfinityPurple hover:bg-purple-700 text-white w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-purple-900/40 transition">
+                    <button onclick="sendCSRMessage()" class="bg-brillPurple hover:bg-violet-700 text-white w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-violet-900/40 transition">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </div>
                 <div class="flex justify-between items-center mt-2 px-1 text-[11px] text-gray-400">
                     <span id="speechStatus">Mic ready. Tap mic or type message.</span>
-                    <span>Xfinity Customer Simulator v1.0</span>
+                    <span>Brill Customer Simulator v1.0</span>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // HARDCODED CONSTANT API KEY (Replace string below with your Gemini API key)
+        // HARDCODED CONSTANT GEMINI API KEY
         const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
 
         let synth = window.speechSynthesis;
@@ -240,31 +240,31 @@
         function getInitialCustomerMessage(cat, mood) {
             const messages = {
                 technical: {
-                    frustrated: "Hi, yes! My internet has been cutting out every 15 minutes for the past two days! I work from home and this is completely unacceptable.",
-                    confused: "Hello dear, my computer screen says 'No internet connection' and the little box with lights is blinking orange. I don't know what to do.",
-                    demanding: "Listen to me closely. I am paying $120 a month for Gigabit service and my speeds are crawling. I demand a supervisor right now!",
-                    polite: "Hi there, good morning. I was wondering if you could help me check my home internet connection? It seems to have dropped off."
+                    frustrated: "Hi, yes! My Brill fiber internet has been cutting out every 15 minutes all morning! I work remotely and this is completely unacceptable.",
+                    confused: "Hello dear, my Wi-Fi box is flashing an orange light and my tablet says there's no internet connection. I don't know what to do.",
+                    demanding: "Listen to me closely. I am paying for your top-tier Gigabit speed and pages won't even load. I demand a supervisor right now!",
+                    polite: "Hi there, good morning. I was wondering if you could help me check my Brill home connection? It seems to have dropped off recently."
                 },
                 billing: {
-                    frustrated: "Look at my bill! You guys charged me $180 this month when my promotion was supposed to be $75! This is highway robbery!",
-                    confused: "Excuse me, I'm looking at my statement and there's a bunch of extra fees and equipment charges I don't understand at all.",
-                    demanding: "Fix this fraudulent charge on my account immediately! I expect an instant credit or I'm filing an FCC complaint!",
-                    polite: "Hello! I noticed my latest bill was higher than usual. Could you help me understand why the charges increased?"
+                    frustrated: "Look at my Brill statement! You guys charged me $145 this month when my promo was supposed to be $65! Explain this right now!",
+                    confused: "Excuse me, I'm looking at my bill and there are all these extra router rental fees and surcharges I don't understand.",
+                    demanding: "Fix this erroneous charge on my account immediately! I expect an instant credit or I'm switching providers today!",
+                    polite: "Hello! I noticed my latest bill was higher than normal. Could you help me understand why the charges increased?"
                 },
                 promo: {
-                    frustrated: "My current deal expired and my bill skyrocketed! I want the same new-customer deal or cancel my service right now.",
-                    confused: "Hi, I keep seeing ads for faster internet bundles. Can you explain what deals are available for me?",
+                    frustrated: "My promotional discount just expired and my bill skyrocketed! I want the new-customer bundle rate or I'm canceling.",
+                    confused: "Hi, I keep seeing ads for faster fiber speeds and streaming bundles. What deals are available for my account?",
                     demanding: "Give me your absolute lowest price and fastest speed available today, or I'm taking my business elsewhere.",
-                    polite: "Hi! I wanted to check if there are any current promotions or bundling discounts available for my account."
+                    polite: "Hi! I wanted to check if there are any current promotions or loyalty discounts available for my Brill account."
                 },
                 retention: {
-                    frustrated: "I am sick and tired of random outages and price hikes. Cancel my account right now, effective immediately!",
-                    confused: "Um hello, I'm moving houses next month and I'm not sure how to transfer or cancel my Xfinity service.",
-                    demanding: "Cancel my service today. Don't try to upsell me, just give me the cancellation confirmation number.",
-                    polite: "Hello, I'm calling because I need to look into canceling my service due to moving out of the coverage area."
+                    frustrated: "I am sick and tired of random connection drops and price hikes. Cancel my Brill account right now, effective immediately!",
+                    confused: "Um hello, I'm moving apartments next month and I'm not sure how to transfer or cancel my Brill service.",
+                    demanding: "Cancel my service today. Don't try to upsell me, just give me the cancellation confirmation number and be done with it.",
+                    polite: "Hello, I'm calling because I need to look into canceling my service due to relocating outside of the coverage area."
                 }
             };
-            return messages[cat]?.[mood] || "Hello, I need assistance with my Xfinity account.";
+            return messages[cat]?.[mood] || "Hello, I need assistance with my Brill account.";
         }
 
         function appendMessage(sender, text) {
@@ -272,17 +272,19 @@
             let isAI = sender === 'AI';
             let html = `
                 <div class="flex items-start space-x-3 ${isAI ? '' : 'flex-row-reverse space-x-reverse'}">
-                    <div class="w-8 h-8 rounded-full ${isAI ? 'bg-purple-600' : 'bg-blue-600'} flex items-center justify-center text-xs font-bold shrink-0">
+                    <div class="w-8 h-8 rounded-full ${isAI ? 'bg-violet-600' : 'bg-blue-600'} flex items-center justify-center text-xs font-bold shrink-0">
                         ${isAI ? 'AI' : 'CSR'}
                     </div>
-                    <div class="${isAI ? 'bg-gray-800 border border-gray-700/60 text-gray-200' : 'bg-purple-900/50 border border-purple-700/50 text-white'} rounded-2xl p-3.5 max-w-md text-sm">
+                    <div class="${isAI ? 'bg-gray-800 border border-gray-700/60 text-gray-200' : 'bg-violet-900/50 border border-violet-700/50 text-white'} rounded-2xl p-3.5 max-w-md text-sm">
                         <p>${text}</p>
                     </div>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', html);
             container.scrollTop = container.scrollHeight;
-            chatHistory.push({ role: isAI ? 'user' : 'model', parts: [{ text }] });
+            
+            // CORRECT ROLE MAPPING: AI customer is 'model', CSR is 'user'
+            chatHistory.push({ role: isAI ? 'model' : 'user', parts: [{ text }] });
         }
 
         function speakText(text) {
@@ -353,15 +355,15 @@
 
         function triggerAction(actionType) {
             let actionMessages = {
-                verify: "System note: Customer account PIN #4819 verified successfully.",
-                ping: "System note: Gateway signal sent. Modem successfully rebooted and online!",
-                credit: "System note: $10 courtesy credit successfully applied to account #8492.",
-                transfer: "System note: Customer transferred to Tier 2 Technical escalation queue."
+                verify: "System note: Subscriber security PIN #7109 verified successfully.",
+                ping: "System note: Brill Fiber Gateway rebooted successfully. Status: Online!",
+                credit: "System note: $15 courtesy credit successfully applied to account #BRILL-9042.",
+                transfer: "System note: Subscriber transferred to Tier 2 Advanced Technical Support."
             };
             let msg = actionMessages[actionType] || "System action executed.";
             
             let container = document.getElementById('chatContainer');
-            container.insertAdjacentHTML('beforeend', `<div class="text-center my-2"><span class="bg-gray-800 text-purple-300 border border-gray-700 text-xs px-3 py-1 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> ${msg}</span></div>`);
+            container.insertAdjacentHTML('beforeend', `<div class="text-center my-2"><span class="bg-gray-800 text-violet-300 border border-gray-700 text-xs px-3 py-1 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> ${msg}</span></div>`);
             container.scrollTop = container.scrollHeight;
 
             sentimentScore = Math.min(100, sentimentScore + 15);
@@ -369,43 +371,56 @@
 
             if (actionType === 'ping') {
                 document.getElementById('crmStatus').className = "text-green-400 font-medium";
-                document.getElementById('crmStatus').textContent = "Online (Healthy 1.2ms)";
+                document.getElementById('crmStatus').textContent = "Online (0.8ms Latency)";
             }
         }
 
         function getFallbackResponse() {
-            if (sentimentScore > 70) return "Thank you so much for your help! I really appreciate you getting this sorted out.";
-            if (currentScenario.category === 'technical') return "Well, I tried restarting it like you said, but the light is still blinking. What's next?";
-            if (currentScenario.category === 'billing') return "That still doesn't explain why my bill went up without warning. Can you waive this?";
-            if (currentScenario.category === 'promo') return "That sounds decent, but can you throw in free activation if I renew today?";
-            return "I hear what you're saying, but unless you can lower my monthly rate right now, I still want to disconnect.";
+            if (sentimentScore > 70) return "Thank you so much for your help! I really appreciate you getting this resolved for me.";
+            if (currentScenario.category === 'technical') return "Well, I tried restarting my router like you suggested, but the light is still blinking. What's next?";
+            if (currentScenario.category === 'billing') return "That still doesn't explain why my bill went up without warning. Can you waive this charge?";
+            if (currentScenario.category === 'promo') return "That sounds okay, but can you throw in free activation if I renew my contract today?";
+            return "I hear what you're saying, but unless you can lower my monthly rate right now, I still want to cancel.";
         }
 
         async function callGeminiAPI(key, userMsg) {
-            let systemPrompt = `You are an Xfinity customer in a CSR training simulator. Scenario category: ${currentScenario.category}, Customer mood: ${currentScenario.mood}. Keep responses concise, realistic, and conversational (1-3 sentences) so the student CSR can practice.`;
+            let systemInstructionText = `You are a residential customer of Brill (an internet and telecommunications provider) in a CSR training simulator. 
+            Current Scenario Category: ${currentScenario.category}
+            Current Customer Mood: ${currentScenario.mood}
             
-            let contents = [
-                { role: "user", parts: [{ text: systemPrompt }] },
-                ...chatHistory,
-                { role: "user", parts: [{ text: userMsg }] }
-            ];
+            CRITICAL RULES:
+            1. NEVER break character. You are a real human customer calling Brill support.
+            2. Keep responses concise and conversational (1-3 sentences max), exactly like a real customer on a support call.
+            3. Match your mood (${currentScenario.mood}):
+               - If 'frustrated': Complain about downtime, high bills, or poor service.
+               - If 'confused': Ask simple, non-technical questions and sound a bit lost.
+               - If 'demanding': Demand supervisors, credits, or better promotional rates.
+               - If 'polite': Be cooperative and thankful when helped.
+            4. React to what the CSR just said. If they offer real help, your sentiment improves. If they give robotic or unhelpful answers, push back.`;
+
+            let payload = {
+                system_instruction: {
+                    parts: [{ text: systemInstructionText }]
+                },
+                contents: chatHistory
+            };
 
             let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: contents })
+                body: JSON.stringify(payload)
             });
             let data = await res.json();
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "I understand. Please go on.";
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Look, are you going to help me with my account or what?";
         }
 
         function resetCall() {
             callActive = false;
             document.getElementById('chatContainer').innerHTML = `
                 <div class="flex items-start space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
                     <div class="bg-gray-800 border border-gray-700/60 rounded-2xl p-3.5 max-w-md text-sm text-gray-200">
-                        <p>Call ended. Select a scenario and click <strong>Start Call</strong> to practice again!</p>
+                        <p>Call ended. Select a scenario and click <strong>Start Simulated Call</strong> to practice again!</p>
                     </div>
                 </div>
             `;
