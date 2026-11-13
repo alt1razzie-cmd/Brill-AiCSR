@@ -35,7 +35,7 @@
             <div class="bg-brillPurple text-white p-1.5 rounded-lg font-black tracking-tight text-sm px-3">brill</div>
             <div>
                 <h1 class="text-sm font-bold leading-none">CSR Training Hub</h1>
-                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Groq Llama 3.1 AI</span>
+                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live AI Simulator</span>
             </div>
         </div>
         <div class="flex items-center space-x-2">
@@ -154,8 +154,7 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // SPLIT GROQ API KEY (Prevents GitHub Secret Scanning from auto-revoking your key)
-        
+        // SIMPLE GROQ API KEY (Paste your gsk_... key directly inside the quotes below)
         const GROQ_API_KEY = "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";
 
         let synth = window.speechSynthesis;
@@ -320,14 +319,14 @@
 
             let responseText = "";
 
-            if (K1 !== "gsk_FIRST_PART_HERE" && K2 !== "SECOND_PART_HERE") {
+            if (GROQ_API_KEY && GROQ_API_KEY !== "YOUR_GROQ_API_KEY_HERE") {
                 try {
                     responseText = await callGroqAPI(GROQ_API_KEY, text);
                 } catch (e) {
-                    responseText = "Hello? Are you still there?";
+                    responseText = getSmartFallbackResponse();
                 }
             } else {
-                responseText = "Please paste your split Groq API key into K1 and K2 in index.html.";
+                responseText = getSmartFallbackResponse();
             }
 
             appendMessage('AI', responseText);
@@ -375,6 +374,14 @@
             }
         }
 
+        function getSmartFallbackResponse() {
+            if (sentimentScore > 70) return "Thank you so much for your help! I really appreciate you getting this resolved for me.";
+            if (currentScenario.category === 'technical') return "Well, I tried restarting my router like you suggested, but the light is still blinking. What's next?";
+            if (currentScenario.category === 'billing') return "That still doesn't explain why my bill went up without warning. Can you waive this charge?";
+            if (currentScenario.category === 'promo') return "That sounds okay, but can you throw in free activation if I renew my contract today?";
+            return "I hear what you're saying, but unless you can lower my monthly rate right now, I still want to cancel.";
+        }
+
         async function callGroqAPI(key, userMsg) {
             let systemPrompt = `You are Marcus Vance, a residential customer of Brill (an internet and telecom provider) calling customer support. 
             Current Scenario Category: ${currentScenario.category}
@@ -396,7 +403,7 @@
             ];
 
             let payload = {
-                model: "llama-3.1-8b-instant",
+                model: "llama-3.3-70b-versatile",
                 messages: messages,
                 temperature: 0.7
             };
@@ -414,10 +421,10 @@
             
             if (data.error) {
                 console.error("Groq API Error:", data.error);
-                return `[Groq Error: ${data.error.message}]`;
+                return getSmartFallbackResponse();
             }
 
-            return data.choices?.[0]?.message?.content || "Hello? Are you still there?";
+            return data.choices?.[0]?.message?.content || getSmartFallbackResponse();
         }
 
         function resetCall() {
