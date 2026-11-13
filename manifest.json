@@ -1,10 +1,10 @@
 {
-  "name": "Xfinity CSR Simulator",
-  "short_name": "CSR Sim",
+  "name": "Brill CSR Simulator",
+  "short_name": "Brill CSR",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#6100ff",
+  "background_color": "#0b0b0f",
+  "theme_color": "#7c3aed",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3067/3067440.png",
