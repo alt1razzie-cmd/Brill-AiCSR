@@ -35,7 +35,7 @@
             <div class="bg-brillPurple text-white p-1.5 rounded-lg font-black tracking-tight text-sm px-3">brill</div>
             <div>
                 <h1 class="text-sm font-bold leading-none">CSR Training Hub</h1>
-                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live AI Simulator</span>
+                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Groq Llama 3.3 AI</span>
             </div>
         </div>
         <div class="flex items-center space-x-2">
@@ -154,8 +154,8 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // HARDCODED CONSTANT GEMINI API KEY (Replace string below with your actual API key)
-        const GEMINI_API_KEY = "AQ.Ab8RN6LFQejnBxYolC_wPE1GQohJx_uW25CdNtbCIO2QOFt6kQ";
+        // HARDCODED CONSTANT GROQ API KEY (Replace string below with your actual Groq API key starting with gsk_...)
+        const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE";
 
         let synth = window.speechSynthesis;
         let voices = [];
@@ -283,8 +283,8 @@
             container.insertAdjacentHTML('beforeend', html);
             container.scrollTop = container.scrollHeight;
             
-            // AI customer messages are 'model', CSR messages are 'user'
-            chatHistory.push({ role: isAI ? 'model' : 'user', parts: [{ text }] });
+            // Standard OpenAI format roles: assistant for AI customer, user for CSR
+            chatHistory.push({ role: isAI ? 'assistant' : 'user', content: text });
         }
 
         function speakText(text) {
@@ -320,14 +320,14 @@
 
             let responseText = "";
 
-            if (GEMINI_API_KEY && GEMINI_API_KEY !== "YOUR_GEMINI_API_KEY_HERE") {
+            if (GROQ_API_KEY && GROQ_API_KEY !== "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") {
                 try {
-                    responseText = await callGeminiAPI(GEMINI_API_KEY, text);
+                    responseText = await callGroqAPI(GROQ_API_KEY, text);
                 } catch (e) {
                     responseText = "Hello? Are you still there?";
                 }
             } else {
-                responseText = "Please configure your Gemini API key in the code.";
+                responseText = "Please configure your Groq API key in the code.";
             }
 
             appendMessage('AI', responseText);
@@ -375,8 +375,8 @@
             }
         }
 
-        async function callGeminiAPI(key, userMsg) {
-            let systemInstructionText = `You are Marcus Vance, a residential customer of Brill (an internet and telecom provider) calling customer support. 
+        async function callGroqAPI(key, userMsg) {
+            let systemPrompt = `You are Marcus Vance, a residential customer of Brill (an internet and telecom provider) calling customer support. 
             Current Scenario Category: ${currentScenario.category}
             Current Customer Mood: ${currentScenario.mood}
             
@@ -390,33 +390,34 @@
                - If 'polite': Be cooperative and thankful when helped.
             4. React directly to what the CSR just said. If they give unhelpful answers, push back or get angrier.`;
 
-            // Prepend a dummy user turn so the contents array always starts with role: 'user' as required by Gemini API
-            let apiContents = [
-                { role: "user", parts: [{ text: "(Phone call connected. You are the customer speaking.)" }] },
+            let messages = [
+                { role: "system", content: systemPrompt },
                 ...chatHistory
             ];
 
             let payload = {
-                system_instruction: {
-                    parts: [{ text: systemInstructionText }]
-                },
-                contents: apiContents
+                model: "llama-3.3-70b-versatile",
+                messages: messages,
+                temperature: 0.7
             };
 
-            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+            let res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${key}`
+                },
                 body: JSON.stringify(payload)
             });
 
             let data = await res.json();
             
             if (data.error) {
-                console.error("Gemini API Error:", data.error);
-                return `[API Error: ${data.error.message}]`;
+                console.error("Groq API Error:", data.error);
+                return `[Groq Error: ${data.error.message}]`;
             }
 
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Hello? Are you still there?";
+            return data.choices?.[0]?.message?.content || "Hello? Are you still there?";
         }
 
         function resetCall() {
