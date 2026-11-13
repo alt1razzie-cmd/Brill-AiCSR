@@ -35,7 +35,7 @@
             <div class="bg-brillPurple text-white p-1.5 rounded-lg font-black tracking-tight text-sm px-3">brill</div>
             <div>
                 <h1 class="text-sm font-bold leading-none">CSR Training Hub</h1>
-                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Groq Llama 3.3 AI</span>
+                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Groq Llama 3.1 AI</span>
             </div>
         </div>
         <div class="flex items-center space-x-2">
@@ -155,7 +155,6 @@
     <!-- SCRIPT LOGIC -->
     <script>
         // SPLIT GROQ API KEY (Prevents GitHub Secret Scanning from auto-revoking your key)
-        // Example: if your key is "gsk_1234567890abcdef", put "gsk_123456" in K1 and "7890abcdef" in K2
         const K1 = "gsk_0a0rGJGwcjrIOWgRwme8WGdyb";
         const K2 = "3FYH03tRqUfBFQgzdU8w8uYbUMP";
         const GROQ_API_KEY = K1 + K2;
@@ -398,7 +397,7 @@
             ];
 
             let payload = {
-                model: "llama-3.3-70b-versatile",
+                model: "llama-3.1-70b-versatile",
                 messages: messages,
                 temperature: 0.7
             };
