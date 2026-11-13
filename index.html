@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xfinity CSR Training Simulator</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6100ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3067/3067440.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        xfinityPurple: '#6100ff',
+                        xfinityDark: '#0b0b0f',
+                        xfinityCard: '#16161f'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-xfinityDark text-white font-sans antialiased h-screen flex flex-col overflow-hidden">
+
+    <!-- TOP HEADER -->
+    <header class="bg-xfinityCard border-b border-gray-800 px-4 py-3 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2">
+            <div class="bg-xfinityPurple text-white p-1.5 rounded-lg font-black tracking-tighter text-sm px-2.5">xfinity</div>
+            <div>
+                <h1 class="text-sm font-bold leading-none">CSR Practice Sim</h1>
+                <span class="text-[10px] text-green-400 flex items-center mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block mr-1 animate-pulse"></span> Live Simulation</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="resetCall()" class="bg-red-600/20 text-red-400 border border-red-500/30 text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-red-600 hover:text-white transition">End/Reset</button>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        
+        <!-- LEFT/TOP: SIMULATION HUD & CRM -->
+        <div class="w-full md:w-80 bg-xfinityCard border-r border-gray-800 flex flex-col shrink-0 overflow-y-auto">
+            <!-- Scenario Selector -->
+            <div class="p-4 border-b border-gray-800 space-y-3">
+                <h2 class="text-xs uppercase tracking-wider text-gray-400 font-bold">1. Select Scenario</h2>
+                <select id="categorySelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-xfinityPurple">
+                    <option value="technical">Technical Support (No Internet/Slow)</option>
+                    <option value="billing">Billing Dispute (Unexpected High Bill)</option>
+                    <option value="promo">Asking Promotion / Upgrades</option>
+                    <option value="retention">Cancellation / Retention Risk</option>
+                </select>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-gray-400 block mb-1">Customer Mood</label>
+                        <select id="moodSelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-1.5 text-xs text-white">
+                            <option value="frustrated">Frustrated & Angry</option>
+                            <option value="confused">Confused & Elderly</option>
+                            <option value="demanding">Demanding / Karen</option>
+                            <option value="polite">Polite & Cooperative</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 block mb-1">Customer Voice</label>
+                        <select id="voiceSelect" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-1.5 text-xs text-white">
+                            <option value="">Default Speech Voice</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="startSimulation()" class="w-full bg-xfinityPurple hover:bg-purple-700 text-white font-semibold py-2 rounded-lg text-sm shadow-lg shadow-purple-900/30 transition">
+                    <i class="fa-solid fa-play mr-1.5"></i> Start Call
+                </button>
+            </div>
+
+            <!-- Customer CRM Data HUD -->
+            <div class="p-4 space-y-4 border-b border-gray-800">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs uppercase tracking-wider text-gray-400 font-bold">Customer Profile</h2>
+                    <span class="text-xs bg-purple-950 text-purple-300 px-2 py-0.5 rounded border border-purple-800">Tier 1 Gold</span>
+                </div>
+                <div class="bg-gray-900/60 rounded-xl p-3 border border-gray-800 space-y-2 text-xs">
+                    <div class="flex justify-between"><span class="text-gray-400">Name:</span> <span class="font-medium">Sarah Jenkins</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Account #:</span> <span class="font-mono text-gray-300">#8492-0192-3</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Current Plan:</span> <span class="text-gray-300">Gigabit Extra + TV</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Gateway Status:</span> <span id="crmStatus" class="text-red-400 font-medium">Offline (Packet Loss)</span></div>
+                </div>
+
+                <!-- CSR Action Tools -->
+                <div>
+                    <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold block mb-2">CSR System Actions</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="triggerAction('verify')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-id-card text-purple-400 mr-1"></i> Verify PIN</button>
+                        <button onclick="triggerAction('ping')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-signal text-blue-400 mr-1"></i> Ping Modem</button>
+                        <button onclick="triggerAction('credit')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-file-invoice-dollar text-green-400 mr-1"></i> Apply $10 Credit</button>
+                        <button onclick="triggerAction('transfer')" class="bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-2 rounded border border-gray-700 text-left truncate"><i class="fa-solid fa-headset text-yellow-400 mr-1"></i> Transfer Tier 2</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Sentiment & Scoring -->
+            <div class="p-4 space-y-3">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-gray-400 font-bold uppercase tracking-wider">Customer Sentiment</span>
+                    <span id="sentimentText" class="text-red-400 font-semibold">Frustrated (25%)</span>
+                </div>
+                <div class="w-full bg-gray-900 rounded-full h-2 overflow-hidden border border-gray-800">
+                    <div id="sentimentBar" class="bg-red-500 h-full transition-all duration-500" style="width: 25%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT/BOTTOM: CHAT & VOICE INTERFACE -->
+        <div class="flex-1 flex flex-col bg-xfinityDark relative overflow-hidden">
+            
+            <!-- Chat Feed -->
+            <div id="chatContainer" class="flex-1 p-4 overflow-y-auto space-y-4">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="bg-gray-800 border border-gray-700/60 rounded-2xl p-3.5 max-w-md text-sm text-gray-200">
+                        <p>Welcome to Xfinity CSR Training. Select your scenario on the left and click <strong>Start Call</strong> to begin practicing!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VOICE & INPUT CONTROLS -->
+            <div class="bg-xfinityCard border-t border-gray-800 p-4 shrink-0">
+                <div class="flex items-center space-x-2">
+                    <button id="micBtn" onclick="toggleSpeechRecognition()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 w-12 h-12 rounded-full flex items-center justify-center border border-gray-700 shrink-0 transition relative">
+                        <i id="micIcon" class="fa-solid fa-microphone text-lg"></i>
+                    </button>
+                    <div class="flex-1 relative">
+                        <input type="text" id="userInput" onkeydown="if(event.key==='Enter') sendCSRMessage()" placeholder="Type your CSR response or tap mic to speak..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-xfinityPurple pr-10">
+                    </div>
+                    <button onclick="sendCSRMessage()" class="bg-xfinityPurple hover:bg-purple-700 text-white w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-purple-900/40 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-2 px-1 text-[11px] text-gray-400">
+                    <span id="speechStatus">Mic ready. Tap mic or type message.</span>
+                    <span>Xfinity Customer Simulator v1.0</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // HARDCODED CONSTANT API KEY (Replace string below with your Gemini API key)
+        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
+
+        let synth = window.speechSynthesis;
+        let voices = [];
+        let recognition = null;
+        let isListening = false;
+        let callActive = false;
+        let sentimentScore = 25;
+        let chatHistory = [];
+        let currentScenario = { category: 'technical', mood: 'frustrated' };
+
+        function loadVoices() {
+            voices = synth.getVoices();
+            let voiceSelect = document.getElementById('voiceSelect');
+            voiceSelect.innerHTML = '<option value="">Default Voice</option>';
+            voices.forEach((v, i) => {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `${v.name} (${v.lang})`;
+                voiceSelect.appendChild(opt);
+            });
+        }
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                let text = event.results[0][0].transcript;
+                document.getElementById('userInput').value = text;
+                stopListening();
+                sendCSRMessage();
+            };
+            recognition.onerror = function() { stopListening(); };
+            recognition.onend = function() { stopListening(); };
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech recognition is not supported in this browser. Try Chrome or Safari.");
+                return;
+            }
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+                isListening = true;
+                document.getElementById('micBtn').classList.add('bg-red-600', 'text-white', 'animate-pulse');
+                document.getElementById('speechStatus').textContent = "Listening to your voice...";
+            }
+        }
+
+        function stopListening() {
+            isListening = false;
+            document.getElementById('micBtn').classList.remove('bg-red-600', 'text-white', 'animate-pulse');
+            document.getElementById('speechStatus').textContent = "Mic ready. Tap mic or type message.";
+        }
+
+        function startSimulation() {
+            callActive = true;
+            sentimentScore = 25;
+            updateSentimentUI();
+            
+            currentScenario.category = document.getElementById('categorySelect').value;
+            currentScenario.mood = document.getElementById('moodSelect').value;
+            
+            let container = document.getElementById('chatContainer');
+            container.innerHTML = '';
+            chatHistory = [];
+
+            let initialPrompt = getInitialCustomerMessage(currentScenario.category, currentScenario.mood);
+            appendMessage('AI', initialPrompt);
+            speakText(initialPrompt);
+        }
+
+        function getInitialCustomerMessage(cat, mood) {
+            const messages = {
+                technical: {
+                    frustrated: "Hi, yes! My internet has been cutting out every 15 minutes for the past two days! I work from home and this is completely unacceptable.",
+                    confused: "Hello dear, my computer screen says 'No internet connection' and the little box with lights is blinking orange. I don't know what to do.",
+                    demanding: "Listen to me closely. I am paying $120 a month for Gigabit service and my speeds are crawling. I demand a supervisor right now!",
+                    polite: "Hi there, good morning. I was wondering if you could help me check my home internet connection? It seems to have dropped off."
+                },
+                billing: {
+                    frustrated: "Look at my bill! You guys charged me $180 this month when my promotion was supposed to be $75! This is highway robbery!",
+                    confused: "Excuse me, I'm looking at my statement and there's a bunch of extra fees and equipment charges I don't understand at all.",
+                    demanding: "Fix this fraudulent charge on my account immediately! I expect an instant credit or I'm filing an FCC complaint!",
+                    polite: "Hello! I noticed my latest bill was higher than usual. Could you help me understand why the charges increased?"
+                },
+                promo: {
+                    frustrated: "My current deal expired and my bill skyrocketed! I want the same new-customer deal or cancel my service right now.",
+                    confused: "Hi, I keep seeing ads for faster internet bundles. Can you explain what deals are available for me?",
+                    demanding: "Give me your absolute lowest price and fastest speed available today, or I'm taking my business elsewhere.",
+                    polite: "Hi! I wanted to check if there are any current promotions or bundling discounts available for my account."
+                },
+                retention: {
+                    frustrated: "I am sick and tired of random outages and price hikes. Cancel my account right now, effective immediately!",
+                    confused: "Um hello, I'm moving houses next month and I'm not sure how to transfer or cancel my Xfinity service.",
+                    demanding: "Cancel my service today. Don't try to upsell me, just give me the cancellation confirmation number.",
+                    polite: "Hello, I'm calling because I need to look into canceling my service due to moving out of the coverage area."
+                }
+            };
+            return messages[cat]?.[mood] || "Hello, I need assistance with my Xfinity account.";
+        }
+
+        function appendMessage(sender, text) {
+            let container = document.getElementById('chatContainer');
+            let isAI = sender === 'AI';
+            let html = `
+                <div class="flex items-start space-x-3 ${isAI ? '' : 'flex-row-reverse space-x-reverse'}">
+                    <div class="w-8 h-8 rounded-full ${isAI ? 'bg-purple-600' : 'bg-blue-600'} flex items-center justify-center text-xs font-bold shrink-0">
+                        ${isAI ? 'AI' : 'CSR'}
+                    </div>
+                    <div class="${isAI ? 'bg-gray-800 border border-gray-700/60 text-gray-200' : 'bg-purple-900/50 border border-purple-700/50 text-white'} rounded-2xl p-3.5 max-w-md text-sm">
+                        <p>${text}</p>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            container.scrollTop = container.scrollHeight;
+            chatHistory.push({ role: isAI ? 'user' : 'model', parts: [{ text }] });
+        }
+
+        function speakText(text) {
+            if (!synth) return;
+            synth.cancel();
+            let utterance = new SpeechSynthesisUtterance(text);
+            let voiceIdx = document.getElementById('voiceSelect').value;
+            if (voiceIdx !== "" && voices[voiceIdx]) {
+                utterance.voice = voices[voiceIdx];
+            }
+            if (currentScenario.mood === 'frustrated') { utterance.rate = 1.1; utterance.pitch = 1.2; }
+            else if (currentScenario.mood === 'confused') { utterance.rate = 0.9; utterance.pitch = 1.0; }
+            else { utterance.rate = 1.0; utterance.pitch = 1.0; }
+            
+            synth.speak(utterance);
+        }
+
+        async function sendCSRMessage() {
+            let inputField = document.getElementById('userInput');
+            let text = inputField.value.trim();
+            if (!text) return;
+            if (!callActive) { startSimulation(); }
+
+            inputField.value = '';
+            appendMessage('CSR', text);
+
+            if (text.toLowerCase().includes('sorry') || text.toLowerCase().includes('understand') || text.toLowerCase().includes('help')) {
+                sentimentScore = Math.min(100, sentimentScore + 20);
+            } else if (text.toLowerCase().includes('calm down') || text.toLowerCase().includes('policy')) {
+                sentimentScore = Math.max(0, sentimentScore - 10);
+            }
+            updateSentimentUI();
+
+            let responseText = "";
+
+            if (GEMINI_API_KEY && GEMINI_API_KEY !== "AQ.Ab8RN6LFQejnBxYolC_wPE1GQohJx_uW25CdNtbCIO2QOFt6kQ") {
+                try {
+                    responseText = await callGeminiAPI(GEMINI_API_KEY, text);
+                } catch (e) {
+                    responseText = getFallbackResponse();
+                }
+            } else {
+                responseText = getFallbackResponse();
+            }
+
+            appendMessage('AI', responseText);
+            speakText(responseText);
+        }
+
+        function updateSentimentUI() {
+            let bar = document.getElementById('sentimentBar');
+            let text = document.getElementById('sentimentText');
+            bar.style.width = sentimentScore + '%';
+            if (sentimentScore < 40) {
+                bar.className = "bg-red-500 h-full transition-all duration-500";
+                text.className = "text-red-400 font-semibold";
+                text.textContent = `Frustrated (${sentimentScore}%)`;
+            } else if (sentimentScore < 75) {
+                bar.className = "bg-yellow-500 h-full transition-all duration-500";
+                text.className = "text-yellow-400 font-semibold";
+                text.textContent = `Calm (${sentimentScore}%)`;
+            } else {
+                bar.className = "bg-green-500 h-full transition-all duration-500";
+                text.className = "text-green-400 font-semibold";
+                text.textContent = `Satisfied (${sentimentScore}%)`;
+            }
+        }
+
+        function triggerAction(actionType) {
+            let actionMessages = {
+                verify: "System note: Customer account PIN #4819 verified successfully.",
+                ping: "System note: Gateway signal sent. Modem successfully rebooted and online!",
+                credit: "System note: $10 courtesy credit successfully applied to account #8492.",
+                transfer: "System note: Customer transferred to Tier 2 Technical escalation queue."
+            };
+            let msg = actionMessages[actionType] || "System action executed.";
+            
+            let container = document.getElementById('chatContainer');
+            container.insertAdjacentHTML('beforeend', `<div class="text-center my-2"><span class="bg-gray-800 text-purple-300 border border-gray-700 text-xs px-3 py-1 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> ${msg}</span></div>`);
+            container.scrollTop = container.scrollHeight;
+
+            sentimentScore = Math.min(100, sentimentScore + 15);
+            updateSentimentUI();
+
+            if (actionType === 'ping') {
+                document.getElementById('crmStatus').className = "text-green-400 font-medium";
+                document.getElementById('crmStatus').textContent = "Online (Healthy 1.2ms)";
+            }
+        }
+
+        function getFallbackResponse() {
+            if (sentimentScore > 70) return "Thank you so much for your help! I really appreciate you getting this sorted out.";
+            if (currentScenario.category === 'technical') return "Well, I tried restarting it like you said, but the light is still blinking. What's next?";
+            if (currentScenario.category === 'billing') return "That still doesn't explain why my bill went up without warning. Can you waive this?";
+            if (currentScenario.category === 'promo') return "That sounds decent, but can you throw in free activation if I renew today?";
+            return "I hear what you're saying, but unless you can lower my monthly rate right now, I still want to disconnect.";
+        }
+
+        async function callGeminiAPI(key, userMsg) {
+            let systemPrompt = `You are an Xfinity customer in a CSR training simulator. Scenario category: ${currentScenario.category}, Customer mood: ${currentScenario.mood}. Keep responses concise, realistic, and conversational (1-3 sentences) so the student CSR can practice.`;
+            
+            let contents = [
+                { role: "user", parts: [{ text: systemPrompt }] },
+                ...chatHistory,
+                { role: "user", parts: [{ text: userMsg }] }
+            ];
+
+            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: contents })
+            });
+            let data = await res.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "I understand. Please go on.";
+        }
+
+        function resetCall() {
+            callActive = false;
+            document.getElementById('chatContainer').innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="bg-gray-800 border border-gray-700/60 rounded-2xl p-3.5 max-w-md text-sm text-gray-200">
+                        <p>Call ended. Select a scenario and click <strong>Start Call</strong> to practice again!</p>
+                    </div>
+                </div>
+            `;
+            sentimentScore = 25;
+            updateSentimentUI();
+        }
+    </script>
+</body>
+</html>
